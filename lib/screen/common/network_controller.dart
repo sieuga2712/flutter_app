@@ -10,7 +10,7 @@ class NetworkController extends GetxController {
   void onInit() async {
     super.onInit();
 
-    hasConnection = await InternetConnectionChecker.createInstance()
+    hasConnection = InternetConnectionChecker.createInstance()
         .onStatusChange
         .listen((InternetConnectionStatus status) {
           switch (status) {

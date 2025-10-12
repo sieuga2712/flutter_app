@@ -1,9 +1,10 @@
 import 'package:appdautien/common/core/app_color.dart';
 import 'package:appdautien/common/core/app_string.dart';
 import 'package:appdautien/common/navigation_bottom.dart';
-import 'package:appdautien/common/navigation_left.dart';
+import 'package:appdautien/common/navigation_drawer_with_router.dart';
 import 'package:appdautien/screen/common/network_controller.dart';
 import 'package:appdautien/screen/common/network_view.dart';
+import 'package:appdautien/common/bindings/binding_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -15,8 +16,9 @@ class HeaderAppbar extends StatelessWidget {
   final String pathScreen;
   final Function()? onBackButtonPressed;
   final String? logoPath;
+  final VoidCallback? onRouteChanged;
 
-  HeaderAppbar({
+  const HeaderAppbar({
     super.key,
     required this.body,
     required this.title,
@@ -25,6 +27,7 @@ class HeaderAppbar extends StatelessWidget {
     this.isConfirm,
     this.onBackButtonPressed,
     this.logoPath,
+    this.onRouteChanged,
   });
 
   @override
@@ -59,8 +62,13 @@ class HeaderAppbar extends StatelessWidget {
               ),
           ],
         ),
-        drawer: NavigationLeft(),
-        bottomNavigationBar: title != "" ? NavigationBottom() : null,
+        drawer: isDrawer ? AppNavigationDrawerWithRouter(
+          authController: BindingManager().authBinding?.authController,
+          onRouteChanged: onRouteChanged,
+        ) : null,
+        bottomNavigationBar: title != "" ? NavigationBottom(
+          onRouteChanged: onRouteChanged,
+        ) : null,
         body:NetworkController().connectionStatus==0
             ? body
             : NetworkView(description: AppString.noInternet),
