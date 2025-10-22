@@ -20,6 +20,8 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     super.initState();
     _authController = AuthController();
+    _usernameController.text = "admin";
+    _passwordController.text = "123456";
   }
 
   @override
@@ -38,11 +40,7 @@ class _LoginViewState extends State<LoginView> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              AppColor.blueAccentColor,
-              Colors.blue,
-              Colors.blueAccent,
-            ],
+            colors: [AppColor.blueAccentColor, Colors.blue, Colors.blueAccent],
           ),
         ),
         child: SafeArea(
@@ -55,11 +53,11 @@ class _LoginViewState extends State<LoginView> {
                   // Logo and title
                   _buildHeader(),
                   const SizedBox(height: 40),
-                  
+
                   // Login form
                   _buildLoginForm(),
                   const SizedBox(height: 30),
-                  
+
                   // Demo credentials info
                   _buildDemoInfo(),
                 ],
@@ -81,11 +79,7 @@ class _LoginViewState extends State<LoginView> {
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.white.withOpacity(0.3)),
           ),
-          child: const Icon(
-            Icons.lock_outline,
-            size: 64,
-            color: Colors.white,
-          ),
+          child: const Icon(Icons.lock_outline, size: 64, color: Colors.white),
         ),
         const SizedBox(height: 20),
         const Text(
@@ -99,10 +93,7 @@ class _LoginViewState extends State<LoginView> {
         const SizedBox(height: 8),
         const Text(
           'Chào mừng bạn đến với Flutter Demo App',
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.white70,
-          ),
+          style: TextStyle(fontSize: 16, color: Colors.white70),
           textAlign: TextAlign.center,
         ),
       ],
@@ -140,14 +131,17 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColor.blueAccentColor, width: 2),
+                  borderSide: const BorderSide(
+                    color: AppColor.blueAccentColor,
+                    width: 2,
+                  ),
                 ),
               ),
               validator: _authController.validateUsername,
               onChanged: _authController.setUsername,
             ),
             const SizedBox(height: 16),
-            
+
             // Password field
             TextFormField(
               controller: _passwordController,
@@ -171,14 +165,17 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: AppColor.blueAccentColor, width: 2),
+                  borderSide: const BorderSide(
+                    color: AppColor.blueAccentColor,
+                    width: 2,
+                  ),
                 ),
               ),
               validator: _authController.validatePassword,
               onChanged: _authController.setPassword,
             ),
             const SizedBox(height: 24),
-            
+
             // Login button
             AnimatedBuilder(
               animation: _authController,
@@ -195,7 +192,11 @@ class _LoginViewState extends State<LoginView> {
                         ),
                         child: Row(
                           children: [
-                            Icon(Icons.error_outline, color: Colors.red[600], size: 20),
+                            Icon(
+                              Icons.error_outline,
+                              color: Colors.red[600],
+                              size: 20,
+                            ),
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
@@ -208,12 +209,14 @@ class _LoginViewState extends State<LoginView> {
                       ),
                       const SizedBox(height: 16),
                     ],
-                    
+
                     SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: _authController.isLoading ? null : _handleLogin,
+                        onPressed: _authController.isLoading
+                            ? null
+                            : _handleLogin,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColor.blueAccentColor,
                           foregroundColor: Colors.white,
@@ -228,7 +231,9 @@ class _LoginViewState extends State<LoginView> {
                                 height: 20,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    Colors.white,
+                                  ),
                                 ),
                               )
                             : const Text(
@@ -260,11 +265,7 @@ class _LoginViewState extends State<LoginView> {
       ),
       child: Column(
         children: [
-          const Icon(
-            Icons.info_outline,
-            color: Colors.white,
-            size: 24,
-          ),
+          const Icon(Icons.info_outline, color: Colors.white, size: 24),
           const SizedBox(height: 8),
           const Text(
             'Thông tin đăng nhập demo:',
@@ -277,10 +278,7 @@ class _LoginViewState extends State<LoginView> {
           const SizedBox(height: 8),
           const Text(
             'Tên đăng nhập: admin\nMật khẩu: 123456',
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 14,
-            ),
+            style: TextStyle(color: Colors.white70, fontSize: 14),
             textAlign: TextAlign.center,
           ),
         ],
@@ -291,12 +289,12 @@ class _LoginViewState extends State<LoginView> {
   Future<void> _handleLogin() async {
     if (_formKey.currentState!.validate()) {
       _authController.clearError();
-      
+
       final success = await _authController.login(
         _usernameController.text.trim(),
         _passwordController.text,
       );
-      
+
       if (success && mounted) {
         // Navigate to main app with router
         Navigator.of(context).pushReplacementNamed('/home');

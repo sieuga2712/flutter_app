@@ -82,3 +82,4 @@ class Page1Binding extends BaseBinding {
     }
   }
 }
+

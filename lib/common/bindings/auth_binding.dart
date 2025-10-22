@@ -37,3 +37,4 @@ class AuthBinding extends BaseBinding {
   /// Get current username
   String get currentUsername => _authController.username;
 }
+

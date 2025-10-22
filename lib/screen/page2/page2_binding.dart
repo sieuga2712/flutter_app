@@ -103,3 +103,4 @@ class Page2Binding extends BaseBinding {
     }
   }
 }
+

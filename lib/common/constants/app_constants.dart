@@ -91,3 +91,4 @@ class ErrorMessages {
   static const String loginFailed = 'Đăng nhập thất bại';
   static const String saveFailed = 'Lưu dữ liệu thất bại';
 }
+

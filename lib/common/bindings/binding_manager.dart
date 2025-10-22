@@ -149,3 +149,4 @@ class BindingManager {
   /// Get binding count
   int get bindingCount => _bindings.length;
 }
+
