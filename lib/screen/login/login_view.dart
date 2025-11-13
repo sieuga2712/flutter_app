@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:appdautien/common/core/app_color.dart';
-import 'package:appdautien/common/auth_controller.dart';
+import 'package:appdautien/screen/login/login_controller.dart';
+import 'package:get/get.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -10,25 +11,17 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  late AuthController _authController;
-  final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _obscurePassword = true;
+  late LoginController _controller;
 
   @override
   void initState() {
     super.initState();
-    _authController = AuthController();
-    _usernameController.text = "admin";
-    _passwordController.text = "123456";
+    _controller = LoginController();
   }
 
   @override
   void dispose() {
-    _authController.dispose();
-    _usernameController.dispose();
-    _passwordController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -115,13 +108,13 @@ class _LoginViewState extends State<LoginView> {
         ],
       ),
       child: Form(
-        key: _formKey,
+        key: _controller.formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Username field
             TextFormField(
-              controller: _usernameController,
+              controller: _controller.usernameController,
               decoration: InputDecoration(
                 labelText: 'Tên đăng nhập',
                 hintText: 'Nhập tên đăng nhập',
@@ -137,28 +130,24 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ),
               ),
-              validator: _authController.validateUsername,
-              onChanged: _authController.setUsername,
+              validator: _controller.validateUsername,
+              onChanged: _controller.onUsernameChanged,
             ),
             const SizedBox(height: 16),
 
             // Password field
             TextFormField(
-              controller: _passwordController,
-              obscureText: _obscurePassword,
+              controller: _controller.passwordController,
+              obscureText: _controller.obscurePassword,
               decoration: InputDecoration(
                 labelText: 'Mật khẩu',
                 hintText: 'Nhập mật khẩu',
                 prefixIcon: const Icon(Icons.lock_outline),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                    _controller.obscurePassword ? Icons.visibility_off : Icons.visibility,
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  },
+                  onPressed: _controller.togglePasswordVisibility,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -171,18 +160,18 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ),
               ),
-              validator: _authController.validatePassword,
-              onChanged: _authController.setPassword,
+              validator: _controller.validatePassword,
+              onChanged: _controller.onPasswordChanged,
             ),
             const SizedBox(height: 24),
 
             // Login button
             AnimatedBuilder(
-              animation: _authController,
+              animation: _controller.authController,
               builder: (context, child) {
                 return Column(
                   children: [
-                    if (_authController.errorMessage.isNotEmpty) ...[
+                    if (_controller.authController.errorMessage.isNotEmpty) ...[
                       Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
@@ -200,7 +189,7 @@ class _LoginViewState extends State<LoginView> {
                             const SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                _authController.errorMessage,
+                                _controller.authController.errorMessage,
                                 style: TextStyle(color: Colors.red[600]),
                               ),
                             ),
@@ -214,7 +203,7 @@ class _LoginViewState extends State<LoginView> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: _authController.isLoading
+                        onPressed: _controller.authController.isLoading
                             ? null
                             : _handleLogin,
                         style: ElevatedButton.styleFrom(
@@ -225,7 +214,7 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           elevation: 2,
                         ),
-                        child: _authController.isLoading
+                        child: _controller.authController.isLoading
                             ? const SizedBox(
                                 width: 20,
                                 height: 20,
@@ -287,18 +276,9 @@ class _LoginViewState extends State<LoginView> {
   }
 
   Future<void> _handleLogin() async {
-    if (_formKey.currentState!.validate()) {
-      _authController.clearError();
-
-      final success = await _authController.login(
-        _usernameController.text.trim(),
-        _passwordController.text,
-      );
-
-      if (success && mounted) {
-        // Navigate to main app with router
-        Navigator.of(context).pushReplacementNamed('/home');
-      }
+    final success = await _controller.submit();
+    if (success && mounted) {
+      Get.offAllNamed('/home');
     }
   }
 }

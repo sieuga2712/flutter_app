@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:appdautien/common/header_bar.dart';
 import 'package:appdautien/common/router/main_router.dart';
-import 'package:appdautien/common/bindings/binding_manager.dart';
 
 class MainAppWithRouter extends StatefulWidget {
   const MainAppWithRouter({super.key});
@@ -17,8 +16,7 @@ class _MainAppWithRouterState extends State<MainAppWithRouter> {
   void initState() {
     super.initState();
     _router = MainRouter();
-    // Initialize page bindings when entering main app
-    BindingManager().initializePageBindings();
+    // Page bindings removed in cleanup
   }
 
 

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:appdautien/common/core/app_color.dart';
 import 'package:appdautien/screen/page3/page3_controller.dart';
-import 'package:appdautien/screen/page3/page3_binding.dart';
-import 'package:appdautien/common/bindings/binding_manager.dart';
 
 class Page3View extends StatefulWidget {
   const Page3View({super.key});
@@ -13,20 +11,18 @@ class Page3View extends StatefulWidget {
 
 class _Page3ViewState extends State<Page3View> {
   late Page3Controller _controller;
-  late Page3Binding _binding;
   final TextEditingController _todoController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _binding = BindingManager().page3Binding!;
-    _controller = _binding.page3Controller;
+    _controller = Page3Controller();
   }
 
   @override
   void dispose() {
     _todoController.dispose();
-    // Controller disposal is handled by binding
+    // No binding; dispose controller if needed in future
     super.dispose();
   }
 

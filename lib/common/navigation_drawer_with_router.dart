@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:appdautien/common/core/app_color.dart';
 import 'package:appdautien/common/auth_controller.dart';
-import 'package:appdautien/common/bindings/binding_manager.dart';
 import 'package:appdautien/common/router/main_router.dart';
 
 class AppNavigationDrawerWithRouter extends StatelessWidget {
@@ -121,26 +120,7 @@ class AppNavigationDrawerWithRouter extends StatelessWidget {
             ),
           ],
           
-          // Binding management section (for debugging)
-          const Divider(),
-          ListTile(
-            leading: const Icon(
-              Icons.settings,
-              color: Colors.grey,
-            ),
-            title: const Text(
-              'Binding Info',
-              style: TextStyle(color: Colors.grey, fontSize: 12),
-            ),
-            subtitle: Text(
-              'Active bindings: ${BindingManager().bindingCount}',
-              style: const TextStyle(fontSize: 10),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              _showBindingInfo(context);
-            },
-          ),
+          // Binding info removed after cleanup
           
           // Router info section
           const Divider(),
@@ -257,39 +237,7 @@ class AppNavigationDrawerWithRouter extends StatelessWidget {
     );
   }
 
-  void _showBindingInfo(BuildContext context) {
-    final bindingManager = BindingManager();
-    final bindingKeys = bindingManager.getAllBindingKeys();
-    
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Binding Information'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Total bindings: ${bindingManager.bindingCount}'),
-            const SizedBox(height: 10),
-            const Text('Active bindings:'),
-            ...bindingKeys.map((key) => Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text('• $key'),
-            )),
-            const SizedBox(height: 10),
-            Text('Authenticated: ${bindingManager.isAuthenticated}'),
-            Text('Username: ${bindingManager.currentUsername}'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Đóng'),
-          ),
-        ],
-      ),
-    );
-  }
+  // Binding info removed
 
   void _showRouterInfo(BuildContext context) {
     final router = MainRouter();

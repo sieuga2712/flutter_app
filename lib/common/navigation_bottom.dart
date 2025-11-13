@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:appdautien/common/core/app_color.dart';
 import 'package:appdautien/common/router/main_router.dart';
-import 'package:appdautien/common/constants/app_constants.dart';
 
 /// Bottom navigation bar with router integration
 class NavigationBottom extends StatelessWidget {

@@ -4,7 +4,6 @@ import 'package:appdautien/common/navigation_bottom.dart';
 import 'package:appdautien/common/navigation_drawer_with_router.dart';
 import 'package:appdautien/screen/common/network_controller.dart';
 import 'package:appdautien/screen/common/network_view.dart';
-import 'package:appdautien/common/bindings/binding_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -63,7 +62,7 @@ class HeaderAppbar extends StatelessWidget {
           ],
         ),
         drawer: isDrawer ? AppNavigationDrawerWithRouter(
-          authController: BindingManager().authBinding?.authController,
+          authController: null,
           onRouteChanged: onRouteChanged,
         ) : null,
         bottomNavigationBar: title != "" ? NavigationBottom(
